@@ -26,6 +26,8 @@
     </div>
 </template>
 <script>
+import { mapActions } from 'vuex';
+import { SIGNUP_ACTION } from '../store/storeConstants'
 import SignupValidations from '../services/SignupValidation';
 
 export default {
@@ -38,13 +40,21 @@ export default {
         }
     },
     methods: {
+        ...mapActions('auth',{
+            signup: SIGNUP_ACTION
+        }),
         onSignup() {
             let validations = new SignupValidations(this.email, this.password)
 
             this.errors = validations.checkValidations();
-            if (Object.keys(this.errors).length) { // Check if there are any errors in the errors object
+            if ('email' in this.errors || 'password' in this.errors) { // Check if there are any errors in the errors object
                 return false;
             }
+            //signup registration
+            this.signup({
+                email: this.email,
+                password: this.password
+            });
         }
     }
 }    
