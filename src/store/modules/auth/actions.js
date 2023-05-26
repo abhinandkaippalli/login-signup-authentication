@@ -18,6 +18,7 @@ export default {
             // console.log(error.response.data.error.errors[0].message);
             let errorMessage = SignupValidations.getErrorMessageFromCode(error.response.data.error.errors[0].message);
             console.log(errorMessage);
+            throw errorMessage;
         }
         if (response.status === 200) {
             context.commit(SET_USER_TOKEN_DATA_MUTATION, {

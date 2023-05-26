@@ -54,7 +54,9 @@ export default {
             this.signup({
                 email: this.email,
                 password: this.password
-            });
+            }).catch((error) => {
+                console.log(error);
+            })
         }
     }
 }    
