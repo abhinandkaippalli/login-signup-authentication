@@ -27,8 +27,8 @@
     </div>
 </template>
 <script>
-import { mapActions } from 'vuex';
-import { SIGNUP_ACTION } from '../store/storeConstants'
+import { mapActions, mapMutations } from 'vuex';
+import { SIGNUP_ACTION, LOADING_SPINNER_SHOW_MUTATION } from '../store/storeConstants'
 import SignupValidations from '../services/SignupValidation';
 
 export default {
@@ -42,23 +42,35 @@ export default {
         }
     },
     methods: {
-        ...mapActions('auth',{
+        ...mapActions('auth', {
             signup: SIGNUP_ACTION
         }),
-        onSignup() {
+
+        ...mapMutations({
+            showLoading: LOADING_SPINNER_SHOW_MUTATION
+        }),
+
+        async onSignup() {
             let validations = new SignupValidations(this.email, this.password)
 
             this.errors = validations.checkValidations();
             if ('email' in this.errors || 'password' in this.errors) { // Check if there are any errors in the errors object
                 return false;
             }
+
+            //make spinner true
+            this.showLoading(true)
+
             //signup registration
-            this.signup({
+            await this.signup({
                 email: this.email,
                 password: this.password
             }).catch((error) => {
                 this.error = error;
-            })
+                this.showLoading(false)
+            });
+            //make spinner false
+            this.showLoading(false)
         }
     }
 }    
