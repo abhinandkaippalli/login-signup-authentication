@@ -74,6 +74,7 @@ import { LOGIN_ACTION, LOADING_SPINNER_SHOW_MUTATION } from '../store/storeConst
         } 
 
         this.showLoading(false);
+        this.$router.push('/posts')
       }
     }
   };

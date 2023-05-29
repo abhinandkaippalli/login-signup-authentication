@@ -17,7 +17,7 @@ const router = createRouter({
       component: VueSignup
     },
     {
-      path: '/post', 
+      path: '/posts', 
       name: 'PostPage',
       component: VuePost
     }
