@@ -29,9 +29,9 @@
   
   <script>
   // import { mapState } from 'vuex'
-  import { mapActions } from 'vuex';
+  import { mapActions, mapMutations } from 'vuex';
 import SignupValidations from '../services/SignupValidation'
-import { LOGIN_ACTION } from '../store/storeConstants';
+import { LOGIN_ACTION, LOADING_SPINNER_SHOW_MUTATION } from '../store/storeConstants';
   
   export default {
     name: 'LoginPage', // Use a multi-word component name
@@ -47,6 +47,11 @@ import { LOGIN_ACTION } from '../store/storeConstants';
       ...mapActions('auth', {
         login: LOGIN_ACTION,
       }),
+
+      ...mapMutations({
+            showLoading: LOADING_SPINNER_SHOW_MUTATION
+        }),
+
       async onLogin() {
         let validations = new SignupValidations(this.email, this.password)
   
@@ -54,7 +59,9 @@ import { LOGIN_ACTION } from '../store/storeConstants';
         if (Object.keys(this.errors).length) { // Check if there are any errors in the errors object
           return false;
         }
+        this.error = '';
 
+        this.showLoading(true);
         // Login do here
         try {
           await this.login({
@@ -63,7 +70,10 @@ import { LOGIN_ACTION } from '../store/storeConstants';
           })
         } catch (error) {
           this.error = error;
+          this.showLoading(false);
         } 
+
+        this.showLoading(false);
       }
     }
   };
