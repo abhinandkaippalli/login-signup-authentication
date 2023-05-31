@@ -23,6 +23,7 @@
 import axios from 'axios'
 import { mapGetters, mapMutations } from 'vuex';
 import { GET_USER_TOKEN_GETTER, LOADING_SPINNER_SHOW_MUTATION } from '../store/storeConstants'
+import axiosInstance from '../services/AxiosTokenInstance';
 
 export default {
     name: 'PostPage',
@@ -41,7 +42,7 @@ export default {
     mounted() {
         this.showLoading(true);
 
-        axios.get(`https://vue-authentication-b4245-default-rtdb.firebaseio.com/tasks.json?auth=${this.token}`)
+        axiosInstance.get(`https://vue-authentication-b4245-default-rtdb.firebaseio.com/tasks.json?auth=${this.token}`)
             .then((response) => {
                 this.formatPosts(response.data);
                 this.showLoading(false);
