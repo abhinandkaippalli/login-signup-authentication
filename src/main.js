@@ -10,7 +10,11 @@ import 'bootstrap/dist/js/bootstrap.bundle.js'
 const app = createApp(App)
 
 axios.interceptors.request.use((config) => {
-    console.log(config); 
+    // console.log(config); 
+    let params = new URLSearchParams();
+    params.append('hai', 'Abhi');
+    config.params = params;
+    return config;
 });
 app.use(router)
 app.use(store)
