@@ -33,16 +33,16 @@ export default {
         }
     },
 
-    computed: {
-        ...mapGetters('auth', {
-            token: GET_USER_TOKEN_GETTER,
-        })
-    },
+    // computed: {
+    //     ...mapGetters('auth', {
+    //         token: GET_USER_TOKEN_GETTER,
+    //     })
+    // },
 
     mounted() {
         this.showLoading(true);
 
-        axiosInstance.get(`https://vue-authentication-b4245-default-rtdb.firebaseio.com/tasks.json?auth=${this.token}`)
+        axiosInstance.get(`https://vue-authentication-b4245-default-rtdb.firebaseio.com/tasks.json`)
             .then((response) => {
                 this.formatPosts(response.data);
                 this.showLoading(false);
