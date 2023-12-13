@@ -1,82 +1,82 @@
 <template>
-    <div class="row">
-      <div class="col-md-6 offset-md-3">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <div>
         <div>
-          <div>
-            <h3>Login</h3>
-          </div>
-          <div class="alert alert-danger" v-if="error">{{ error }}</div>
-          <form @submit.prevent="onLogin()">
-            <div class="form-group">
-              <label for="">Email</label>
-              <input type="text" class="form-control" v-model.trim="email" />
-              <div class="error" v-if="errors.email">{{ errors.email }}</div>
-            </div>
-            <div class="form-group">
-              <label for="">Password</label>
-              <input type="password" class="form-control" v-model.trim="password" />
-              <div class="error" v-if="errors.password">{{ errors.password }}</div>
-            </div>
-  
-            <div class="my-3">
-              <button type="submit" class="btn btn-primary">Login</button>
-            </div>
-          </form>
+          <h3>Login</h3>
         </div>
+        <div class="alert alert-danger" v-if="error">{{ error }}</div>
+        <form @submit.prevent="onLogin()">
+          <div class="form-group">
+            <label for="">Email</label>
+            <input type="text" class="form-control" v-model.trim="email" />
+            <div class="error" v-if="errors.email">{{ errors.email }}</div>
+          </div>
+          <div class="form-group">
+            <label for="">Password</label>
+            <input type="password" class="form-control" v-model.trim="password" />
+            <div class="error" v-if="errors.password">{{ errors.password }}</div>
+          </div>
+
+          <div class="my-3">
+            <button type="submit" class="btn btn-primary">Login</button>
+          </div>
+        </form>
       </div>
     </div>
-  </template>
+  </div>
+</template>
   
-  <script>
-  // import { mapState } from 'vuex'
-  import { mapActions, mapMutations } from 'vuex';
+<script>
+// import { mapState } from 'vuex'
+import { mapActions, mapMutations } from 'vuex';
 import SignupValidations from '../services/SignupValidation'
 import { LOGIN_ACTION, LOADING_SPINNER_SHOW_MUTATION } from '../store/storeConstants';
-  
-  export default {
-    name: 'LoginPage', // Use a multi-word component name
-    data() {
-      return {
-        email: '',
-        password: '',
-        errors: [], 
-        error:'',// Initialize errors as an empty object
-      }
-    },
-    methods: {
-      ...mapActions('auth', {
-        login: LOGIN_ACTION,
-      }),
 
-      ...mapMutations({
-            showLoading: LOADING_SPINNER_SHOW_MUTATION
-        }),
-
-      async onLogin() {
-        let validations = new SignupValidations(this.email, this.password)
-  
-        this.errors = validations.checkValidations();
-        if (Object.keys(this.errors).length) { // Check if there are any errors in the errors object
-          return false;
-        }
-        this.error = '';
-
-        this.showLoading(true);
-        // Login do here
-        try {
-          await this.login({
-            email: this.email, 
-            password: this.password
-          })
-        } catch (error) {
-          this.error = error;
-          this.showLoading(false);
-        } 
-
-        this.showLoading(false);
-        this.$router.push('/posts')
-      }
+export default {
+  name: 'LoginPage', // Use a multi-word component name
+  data() {
+    return {
+      email: '',
+      password: '',
+      errors: [],
+      error: '',// Initialize errors as an empty object
     }
-  };
-  </script>
+  },
+  methods: {
+    ...mapActions('auth', {
+      login: LOGIN_ACTION,
+    }),
+
+    ...mapMutations({
+      showLoading: LOADING_SPINNER_SHOW_MUTATION
+    }),
+
+    async onLogin() {
+      let validations = new SignupValidations(this.email, this.password)
+
+      this.errors = validations.checkValidations();
+      if (Object.keys(this.errors).length) { // Check if there are any errors in the errors object
+        return false;
+      }
+      this.error = '';
+
+      this.showLoading(true);
+      // Login do here
+      try {
+        await this.login({
+          email: this.email,
+          password: this.password
+        })
+      } catch (error) {
+        this.error = error;
+        this.showLoading(false);
+      }
+
+      this.showLoading(false);
+      this.$router.push('/posts')
+    }
+  }
+};
+</script>
   
